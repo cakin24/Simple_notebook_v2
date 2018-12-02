@@ -1,0 +1,31 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block content %}
+
+  <p>主题: {{ topic }}</p>
+
+  <p>条目:</p>
+  <p>
+      <!---显示条目前添加链接，因为在这种页面中，执行的最常见的操作是添加新条目。-->
+      <a href="{% url 'learning_logs:new_entry' topic.id %}">添加新条目</a>
+  </p>
+  <ul>
+  {% for entry in entries %}
+    <li>
+      <p>{{ entry.date_added|date:'M d, Y H:i' }}</p>
+      <p>{{ entry.text|linebreaks }}</p>
+      <p>
+        <!--我们将编辑链接放在每个条目的日期和文本后面。在循环中，我们使用模板标签 url .
+         根据 URL 模式 edit_entry 和当前条目的 ID 属性（ entry.id ）来确定 URL 。链接
+         文本为 "编辑条目" ，它出现在页面中每个条目的后面。-->
+        <a href="{% url 'learning_logs:edit_entry' entry.id %}">编辑条目</a>
+      </p>
+    </li>
+  {% empty %}
+    <li>
+      没有针对该主题的条目.
+    </li>
+  {% endfor %}
+  </ul>
+
+{% endblock content %}
